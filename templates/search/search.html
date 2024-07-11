@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a2917; /* Update with exact background color */
+            color: #e0e1dd;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #1a2917;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            width: 400px;
+            margin-bottom: 20px;
+        }
+        .form-container h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-container select {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #415a77;
+            background-color: #1b263b;
+            color: #e0e1dd;
+        }
+        .search-button {
+            padding: 10px 20px;
+            background-color: #4ac7c3;
+            color: #e0e1dd;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100px;
+            align-self: center;
+        }
+        .results {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .cards {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .card {
+            background-color: green; /* Update background color of the card */
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            width: 200px;
+            text-align: center;
+        }
+        .card img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .card p {
+            margin: 5px 0;
+        }
+        .card p.large {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .card p.small {
+            font-size: 14px;
+            color: #adb5bd;
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+    <div class="form-container">
+        <h1>Choose Origin & Destination Airports:</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+    {% if response_data %}
+        <div class="results">
+            <div class="cards">
+                {% if response_data.data %}
+                    {% for item in response_data.data %}
+                        <div class="card">
+                            <img src="{% static 'search/logo.png' %}" alt="logo">
+                            <p>{{ item.partner_program }}</p>
+                            <p class="small">{{ item.origin }}->{{ item.destination }}</p>
+                            <p class="small">2024-07-09 - 2024-10-07</p>
+                            <p class="large">{{ item.min_business_miles|default:"N/A" }} + ${{ item.min_business_tax|default:"N/A" }}</p>
+                            <p class="small">Min Business Miles</p>
+                            <p class="large">{{ item.min_economy_miles|default:"N/A" }} + ${{ item.min_economy_tax|default:"N/A" }}</p>
+                            <p class="small">Min Economy Miles</p>
+                            <p class="large">{{ item.min_first_miles|default:"N/A" }} + ${{ item.min_first_tax|default:"N/A" }}</p>
+                            <p class="small">Min First Miles</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Try another search route.</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</body>
+</html>
