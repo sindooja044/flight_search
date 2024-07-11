@@ -103,7 +103,7 @@
                 {% if response_data.data %}
                     {% for item in response_data.data %}
                         <div class="card">
-                            <img src="{% static 'search/static/search/logo.png' %}" alt="logo">
+                            <img src="{% static '/static/search/static/search/logo.png' %}" alt="logo">
                             <p>{{ item.partner_program }}</p>
                             <p class="small">{{ item.origin }}->{{ item.destination }}</p>
                             <p class="small">2024-07-09 - 2024-10-07</p>
