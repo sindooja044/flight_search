@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "flight_search/wsgi.py",
+        "use": "@vercel/python",
+        "config":{"maxLmdaSize":"15mb", "runtime":"python3.9"}
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "flight_search/wsgi.py"
+      }
+    ]
+  }
+  
